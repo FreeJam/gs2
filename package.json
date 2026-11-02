@@ -1,0 +1,13 @@
+{
+  "name": "galactic-siege-2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Galactic Siege 2.0 — браузерная космическая стратегия (neon edition)",
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test:api": "node --test --test-concurrency=1 tests/api.test.mjs",
+    "test:frontend": "node --test --test-concurrency=1 tests/frontend.test.mjs",
+    "test:multiplayer": "node --test --test-concurrency=1 tests/multiplayer.test.mjs"
+  }
+}

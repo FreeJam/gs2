@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Галактическая Осада 2.0</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/menu.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
+</head>
+<body>
+  <!-- ===== МЕНЮ ===== -->
+  <div id="menu" class="menu-container">
+    <div class="menu-bg">
+      <div id="menuParticles" class="menu-particles" aria-hidden="true"></div>
+      <div class="menu-scan" aria-hidden="true"></div>
+    </div>
+    
+    <!-- Главное меню -->
+    <div id="mainMenu" class="menu-screen active">
+      <div class="logo">
+        <h1>ГАЛАКТИЧЕСКАЯ ОСАДА</h1>
+        <span class="version">2.0</span>
+      </div>
+      
+      <div class="menu-buttons">
+        <button class="menu-btn primary" onclick="menu.showScreen('singleplayer')">
+          <span class="icon">🎮</span>
+          <span>Одиночная игра</span>
+        </button>
+        <button class="menu-btn primary" onclick="menu.showScreen('multiplayer')">
+          <span class="icon">🌐</span>
+          <span>Мультиплеер</span>
+        </button>
+        <button class="menu-btn" onclick="menu.showScreen('settings')">
+          <span class="icon">⚙️</span>
+          <span>Настройки</span>
+        </button>
+        <button class="menu-btn" onclick="menu.showScreen('help')">
+          <span class="icon">❓</span>
+          <span>Помощь</span>
+        </button>
+      </div>
+
+      <div class="fullscreen-toggle">
+        <button id="fullscreenBtn" class="icon-btn" title="Полноэкранный режим">
+          <span>⛶</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Одиночная игра -->
+    <div id="singleplayerMenu" class="menu-screen">
+      <h2>Одиночная игра</h2>
+      <div class="menu-buttons">
+        <button class="menu-btn" onclick="game.startSingleplayer(1)">
+          <span>Легко (1 ИИ)</span>
+        </button>
+        <button class="menu-btn" onclick="game.startSingleplayer(2)">
+          <span>Средне (2 ИИ)</span>
+        </button>
+        <button class="menu-btn" onclick="game.startSingleplayer(3)">
+          <span>Сложно (3 ИИ)</span>
+        </button>
+        <button class="menu-btn back" onclick="menu.showScreen('mainMenu')">
+          <span>← Назад</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Мультиплеер -->
+    <div id="multiplayerMenu" class="menu-screen">
+      <h2>Мультиплеер</h2>
+      
+      <div class="player-name-input">
+        <label>Ваше имя:</label>
+        <input type="text" id="playerName" placeholder="Игрок" maxlength="16" value="Игрок" />
+      </div>
+
+      <div class="room-actions">
+        <button class="menu-btn" onclick="menu.showScreen('createRoom')">
+          <span class="icon">➕</span>
+          <span>Создать комнату</span>
+        </button>
+      </div>
+
+      <div class="rooms-list-container">
+        <h3>Доступные комнаты</h3>
+        <div id="roomsList" class="rooms-list">
+          <div class="loading">Загрузка...</div>
+        </div>
+        <button class="menu-btn refresh" onclick="multiplayer.refreshRooms()">
+          <span>🔄 Обновить</span>
+        </button>
+      </div>
+
+      <button class="menu-btn back" onclick="menu.showScreen('mainMenu')">
+        <span>← Назад</span>
+      </button>
+    </div>
+
+    <!-- Создание комнаты -->
+    <div id="createRoom" class="menu-screen">
+      <h2>Создать комнату</h2>
+      
+      <div class="form-group">
+        <label>Название комнаты:</label>
+        <input type="text" id="roomName" placeholder="Моя комната" maxlength="24" />
+      </div>
+
+      <div class="form-group">
+        <label>Количество игроков:</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="maxPlayers" value="2" checked />
+            <span>2 игрока</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="maxPlayers" value="3" />
+            <span>3 игрока</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="maxPlayers" value="4" />
+            <span>4 игрока</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button class="menu-btn primary" onclick="multiplayer.createRoom()">
+          <span>Создать и войти</span>
+        </button>
+        <button class="menu-btn back" onclick="menu.showScreen('multiplayer')">
+          <span>← Назад</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Лобби комнаты -->
+    <div id="roomLobby" class="menu-screen">
+      <h2 id="lobbyRoomName">Комната</h2>
+      <div class="lobby-info">
+        <span id="lobbyPlayerCount">1 / 2 игроков</span>
+        <span id="lobbyStatus" class="status">Ожидание...</span>
+      </div>
+
+      <div class="players-list" id="lobbyPlayers">
+        <!-- Игроки будут добавлены динамически -->
+      </div>
+
+      <div class="lobby-actions">
+        <button id="startGameBtn" class="menu-btn primary" onclick="multiplayer.startGame()" disabled>
+          <span>Начать игру</span>
+        </button>
+        <button class="menu-btn" onclick="multiplayer.leaveRoom()">
+          <span>Выйти из комнаты</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Настройки -->
+    <div id="settingsMenu" class="menu-screen">
+      <h2>Настройки</h2>
+      
+      <div class="settings-group">
+        <h3>Графика</h3>
+        <div class="setting-item">
+          <label>Качество эффектов</label>
+          <select id="graphicsQuality">
+            <option value="low">Низкое</option>
+            <option value="medium" selected>Среднее</option>
+            <option value="high">Высокое</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label>Показывать частицы</label>
+          <label class="toggle">
+            <input type="checkbox" id="showParticles" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Звук</h3>
+        <div class="setting-item">
+          <label>Громкость эффектов</label>
+          <input type="range" id="sfxVolume" min="0" max="100" value="70" />
+        </div>
+        <div class="setting-item">
+          <label>Громкость музыки</label>
+          <input type="range" id="musicVolume" min="0" max="100" value="50" />
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Управление</h3>
+        <div class="setting-item">
+          <label>Чувствительность</label>
+          <input type="range" id="sensitivity" min="50" max="150" value="100" />
+        </div>
+      </div>
+
+      <button class="menu-btn back" onclick="menu.showScreen('mainMenu')">
+        <span>← Назад</span>
+      </button>
+    </div>
+
+    <!-- Помощь -->
+    <div id="helpMenu" class="menu-screen">
+      <h2>Как играть</h2>
+      
+      <div class="help-content">
+        <div class="help-section">
+          <h3>🎯 Цель игры</h3>
+          <p>Захватите все планеты на карте, отправляя флоты кораблей на враждебные планеты.</p>
+        </div>
+
+        <div class="help-section">
+          <h3>🖱️ Управление (ПК)</h3>
+          <ul>
+            <li><strong>Клик</strong> — выбрать свою планету</li>
+            <li><strong>Drag</strong> — потянуть от своей планеты в сторону цели</li>
+            <li><strong>Умный прицел</strong> — цель подсвечивается даже если не довести стрелку до планеты</li>
+            <li><strong>Свои планеты</strong> — можно отправлять подкрепление между своими мирами</li>
+            <li><strong>Колёсико / [ ] / панель слева</strong> — изменить % отправки</li>
+            <li><strong>Esc</strong> — отменить выбор</li>
+            <li><strong>R</strong> — перезапустить игру</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h3>📱 Управление (Мобильный)</h3>
+          <ul>
+            <li><strong>Касание</strong> — выбрать планету</li>
+            <li><strong>Повторный свайп от своей планеты</strong> — отправить флот с автоприцелом</li>
+            <li><strong>Свайп по пустому месту</strong> — плавно сдвинуть обзор карты</li>
+            <li><strong>Тап по пустому месту</strong> — снять выделение</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h3>💡 Советы</h3>
+          <ul>
+            <li>Большие планеты производят корабли быстрее</li>
+            <li>Нейтральные планеты легче захватить</li>
+            <li>Отправляйте несколько флотов одновременно</li>
+            <li>Защищайте свои планеты от контратак</li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="menu-btn back" onclick="menu.showScreen('mainMenu')">
+        <span>← Назад</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== ИГРОВОЙ ИНТЕРФЕЙС ===== -->
+  <div id="gameUI" class="game-ui hidden">
+    <div class="game-hud">
+      <div class="hud-topbar">
+        <div class="hud-spacer"></div>
+
+        <div class="hud-status-stack">
+          <div id="gameStatus" class="hud-status-card">Игра началась!</div>
+        </div>
+
+        <div class="hud-right">
+          <button id="gameFullscreenBtn" class="icon-btn" title="Полноэкранный режим">
+            <span>⛶</span>
+          </button>
+          <button id="pauseBtn" class="icon-btn" title="Пауза">
+            <span>⏸</span>
+          </button>
+          <button id="menuBtn" class="icon-btn" title="В меню">
+            <span>☰</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="send-rail" aria-label="Быстрый выбор процента отправки">
+        <div class="send-rail-header">
+          <span class="eyebrow">Отправка</span>
+          <strong id="sendPct">50%</strong>
+        </div>
+        <div class="send-rail-chips">
+          <button class="chip" data-pct="0.25" title="25%"><span>25%</span></button>
+          <button class="chip" data-pct="0.50" title="50%"><span>50%</span></button>
+          <button class="chip" data-pct="0.75" title="75%"><span>75%</span></button>
+          <button class="chip" data-pct="1.00" title="100%"><span>100%</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Пауза меню -->
+    <div id="pauseMenu" class="pause-menu hidden">
+      <div class="pause-content">
+        <h2>Пауза</h2>
+        <button class="menu-btn" onclick="game.resume()">
+          <span>Продолжить</span>
+        </button>
+        <button class="menu-btn" onclick="game.restart()">
+          <span>Заново</span>
+        </button>
+        <button class="menu-btn" onclick="game.toMenu()">
+          <span>В главное меню</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Экран окончания игры -->
+    <div id="gameOverScreen" class="game-over hidden">
+      <div class="game-over-content">
+        <h2 id="winnerText">Победа!</h2>
+        <div class="game-over-stats" id="gameStats"></div>
+        <button class="menu-btn primary" onclick="game.restart()">
+          <span>Играть снова</span>
+        </button>
+        <button class="menu-btn" onclick="game.toMenu()">
+          <span>В главное меню</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CANVAS ===== -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- ===== СКРИПТЫ ===== -->
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/multiplayer.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

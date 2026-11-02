@@ -1,0 +1,139 @@
+/* ===== SOAP BUBBLE MOBILE STYLES — GS2 ===== */
+
+/* ===== МОБИЛЬНОЕ УПРАВЛЕНИЕ ===== */
+.mobile-controls {
+  display: none; position: fixed; bottom: 100px; left: 0; right: 0;
+  padding: 0 20px; z-index: 15; pointer-events: none;
+}
+.mobile-controls > * { pointer-events: auto; }
+
+.mobile-joystick { position: absolute; left: 30px; bottom: 0; }
+
+.joystick-base {
+  width: 122px; height: 122px;
+  background:
+    radial-gradient(120% 120% at 32% 24%, rgba(255, 255, 255, 0.18), transparent 58%),
+    rgba(140, 200, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.28); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; position: relative;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.25),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.28),
+    0 0 22px rgba(140, 200, 255, 0.16);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+.joystick-handle {
+  width: 52px; height: 52px;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.1) 42%, transparent 62%),
+    radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.35), rgba(0, 240, 255, 0.12));
+  border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+  position: absolute; transition: transform 0.05s ease;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 240, 255, 0.28);
+}
+.joystick-handle.active {
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.15) 42%, transparent 62%),
+    radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.5), rgba(0, 240, 255, 0.2));
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.5), 0 0 24px rgba(0, 240, 255, 0.45);
+}
+
+.mobile-actions { position: absolute; right: 30px; bottom: 10px; display: flex; flex-direction: column; gap: 12px; }
+
+.mobile-btn {
+  width: 66px; height: 66px; border-radius: 50%;
+  background:
+    radial-gradient(120% 120% at 32% 24%, rgba(255, 255, 255, 0.3), transparent 58%),
+    rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.3); color: white; font-size: 24px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.3),
+    0 10px 26px rgba(0, 0, 0, 0.34);
+}
+.mobile-btn:hover { border-color: rgba(255,255,255,0.5); transform: scale(1.06); }
+.mobile-btn:active { transform: scale(0.94); }
+
+.mobile-btn#mobileSend {
+  border-color: rgba(0, 240, 255, 0.5);
+  background:
+    radial-gradient(120% 120% at 32% 24%, rgba(255, 255, 255, 0.35), transparent 58%),
+    rgba(0, 240, 255, 0.24);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.35), inset 0 -14px 26px rgba(0,0,0,0.25), 0 0 20px rgba(0, 240, 255, 0.28);
+}
+.mobile-btn#mobileSend:active { background-color: rgba(0, 240, 255, 0.38); }
+
+.mobile-btn#mobileCancel {
+  border-color: rgba(255, 45, 149, 0.5);
+  background:
+    radial-gradient(120% 120% at 32% 24%, rgba(255, 255, 255, 0.35), transparent 58%),
+    rgba(255, 45, 149, 0.22);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.35), inset 0 -14px 26px rgba(0,0,0,0.25), 0 0 20px rgba(255, 45, 149, 0.24);
+}
+
+/* ===== МЕДИА-ЗАПРОСЫ ===== */
+
+/* Планшеты */
+@media (max-width: 1024px) {
+  .menu-screen { padding: 30px 20px; }
+  .logo h1 { font-size: 42px; }
+  .menu-buttons { max-width: 310px; }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+  .hud-pill.hint { display: none; }
+
+  .hud-topbar { padding: 10px 12px 0; gap: 10px; flex-wrap: wrap; }
+  .hud-pill { padding: 7px 14px; font-size: 13px; }
+  .hud-status-stack { min-width: 100%; order: 3; }
+  .hud-status-card { width: 100%; border-radius: 26px; }
+  .icon-btn { width: 38px; height: 38px; font-size: 16px; }
+
+  .send-rail {
+    top: auto; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%); width: auto; min-width: min(92vw, 320px); max-width: calc(100vw - 18px);
+    padding: 9px 12px; gap: 10px; flex-direction: row; align-items: center; justify-content: center;
+    border-radius: 999px;
+  }
+  .send-rail-header { align-items: flex-start; text-align: left; min-width: 48px; }
+  .send-rail-header strong { font-size: 14px; }
+  .send-rail-header .eyebrow { display: none; }
+  .send-rail-chips { flex-direction: row; gap: 8px; }
+  .chip { width: 54px; min-height: 46px; }
+  .chip span { min-height: 46px; font-size: 12px; }
+
+  .menu-container { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .menu-screen { padding: 20px 16px; min-height: 100dvh; }
+  .logo { margin-bottom: 30px; }
+  .logo h1 { font-size: clamp(24px, 10vw, 40px); letter-spacing: 4px; }
+  .menu-buttons { max-width: 100%; }
+  .menu-btn { padding: 15px 26px; font-size: 14px; }
+
+  .player-name-input, .form-group { max-width: 100%; }
+  .radio-group { gap: 8px; }
+  .radio-label { padding: 10px 16px; font-size: 14px; }
+
+  .rooms-list-container { max-width: 100%; }
+  .room-item { padding: 12px 16px; }
+
+  .player-slot { padding: 14px 18px; }
+  .pause-content, .game-over-content { padding: 32px 26px; margin: 0 16px; border-radius: 32px; }
+  .pause-content h2 { font-size: 26px; }
+  .game-over-content h2 { font-size: 32px; }
+}
+
+/* Маленькие экраны */
+@media (max-width: 400px) {
+  .logo h1 { font-size: 28px; letter-spacing: 3px; }
+  .menu-btn { padding: 13px 22px; font-size: 13px; }
+  .hud-pill { font-size: 12px; padding: 6px 12px; }
+  .send-rail { min-width: calc(100vw - 24px); }
+  .chip { width: 48px; min-height: 42px; }
+  .chip span { min-height: 42px; font-size: 11px; }
+  .mobile-btn { width: 58px; height: 58px; font-size: 20px; }
+}
